@@ -1,0 +1,37 @@
+
+
+  const express = require("express")
+  const cors = require("cors")
+const { connection } = require("./config/db")
+const { postRouter } = require("./Route/Post.route")
+const { getRouter } = require("./Route/Get.route")
+const { allRouter } = require("./Route/All.route")
+
+
+
+  const app = express()
+
+ 
+  app.use(express.json())
+  app.use(cors())
+
+  app.get("/", (req,res) =>{
+    res.send("Welcome")
+  })
+
+  app.use('/company/add', postRouter)
+
+  app.use('/', getRouter)
+
+  app.use('/all', allRouter)
+  
+  app.listen(5500, async() =>{
+
+    try{
+        console.log('server is running on port 5500')
+        await connection
+        console.log('Connected to db')
+    }catch(err){
+        console.log(err)
+    }
+  })
